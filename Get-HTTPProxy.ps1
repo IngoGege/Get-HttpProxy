@@ -4,7 +4,7 @@
 
 Created by: ingo.gegenwarth[at]sap.com
 Version:	42 ("What do you get if you multiply six by nine?")
-Changed:	27.10.2014
+Changed:	06.12.2023
 
 .DESCRIPTION
 
@@ -128,7 +128,7 @@ Function GetExchServer {
 	#http://technet.microsoft.com/en-us/library/bb123496(v=exchg.80).aspx on the bottom there is a list of values
 	param([array]$Roles,[string]$ADSite)
 	Process {
-		$valid = @("2","4","16","20","32","36","38","54","64","16385","16439")
+		$valid = @("2","4","16","20","32","36","38","54","64","16385","16439","16423")
 		ForEach ($Role in $Roles){
 			If (!($valid -contains $Role)) {
 				Write-Output -fore red "Please use the following numbers: MBX=2,CAS=4,UM=16,HT=32,Edge=64 multirole servers:CAS/HT=36,CAS/MBX/HT=38,CAS/UM=20,E2k13 MBX=54,E2K13 CAS=16385,E2k13 CAS/MBX=16439"
@@ -186,9 +186,9 @@ function buildstamp {
 
 If (!($Localpath)) {
 	# get CAS servers
-	[array]$Servers = GetExchServer -Role 16385,16439 -ADSite $ADSite
+	[array]$Servers = GetExchServer -Role 16385,16439,16423 -ADSite $ADSite
 	If ($Servers) {
-		Write-Output "Found the following Exchange 2013 servers:" $($Servers | %{$_.Properties.name})
+		Write-Output "Found the following Exchange servers:" $($Servers | %{$_.Properties.name})
 		ForEach ($Server in $Servers) {
 		[array]$TempPath += "\\" + $Server.Properties.name + "\" + ($Server.Properties.msexchinstallpath -as [string]).Replace(":","$") + "\Logging\HttpProxy"
 		}
